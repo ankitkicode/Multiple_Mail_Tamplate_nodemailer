@@ -1,3 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CLIF Email Templates Tester</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #eaeff5;
+      padding: 20px;
+    }
+    h1 {
+      font-size: 28px;
+    }
+    select, button {
+      padding: 10px;
+      margin: 10px 0;
+      font-size: 16px;
+    }
+    iframe {
+      width: 100%;
+      height: 700px;
+      border: none;
+      background: white;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🧪 CLIF Email Template Preview</h1>
+
+  <label for="templateSelect">Choose a template:</label>
+  <select id="templateSelect">
+    <option value="welcomeEmail">Welcome Email</option>
+    <option value="subscriptionConfirmation">Subscription Confirmation</option>
+    <option value="otpEmail">OTP Email</option>
+    <option value="monthlyTracker">Monthly Tracker</option>
+    <option value="subscriptionEndAlert">Subscription End Alert</option>
+    <option value="helpRequestReceived">Help Request Received</option>
+    <option value="contactRequestReceived">Contact Request Received</option>
+<option value="mentorAdded">Mentor Added</option>
+<option value="priceQuerySubmitted">Price Query Submitted</option>
+<option value="userFeedbackReceived">User Feedback Received</option>
+
+
+  </select>
+
+  <button onclick="renderTemplate()">Preview Template</button>
+
+  <iframe id="preview"></iframe>
+
+  <script>
 const templates = {
   welcomeEmail: `
 <!DOCTYPE html>
@@ -441,7 +494,58 @@ userFeedbackReceived: `
 </html>
 `,
 
+
+
+
+
 };
 
+const dummyData = {
+  firstName: "Rahul",
+  lastName: "Sharma",
+  message: "I am facing an issue with my dashboard not loading properly.",
+  messages: "I would like to know more about your premium services.",
+  name: "Ravi Singh",
+  email: "ravi.singh@example.com",
+  password: "mentor123",
+  organization: "TechSolutions Pvt Ltd",
+  organizationType: "Startup",
+  otherOrganizationType: "",
+  contactPerson: "Sneha Rao",
+  designation: "CTO",
+  phone: "+91-9876543210",
+  country: "India",
+  state: "Karnataka",
+  website: "https://techsolutions.com",
+  source: "Google Search",
+  comments: "Looking for pricing for enterprise plan.",
+  userType: "Entrepreneur",
+  helpfulnessRating: "5",
+  mostUsefulFeature: "Mentorship Portal",
+  otherFeature: "Progress Tracker",
+  improvements: "Add live chat support",
+  wouldRecommend: "Yes",
+  interestedInSubscription: "Yes",
+  additionalFeedback: "Keep up the great work!",
+};
+    function renderTemplate() {
+      const selected = document.getElementById("templateSelect").value;
+      let html = templates[selected];
 
-module.exports = templates;
+      for (const key in dummyData) {
+        const regex = new RegExp(`{{${key}}}`, 'g');
+        html = html.replace(regex, dummyData[key]);
+      }
+
+      // Handle conditional pluralization in `daysLeft`
+      html = html.replace(/{{daysLeft === "1" \? "" : "s"}}/g, dummyData.daysLeft === "1" ? "" : "s");
+
+      const iframe = document.getElementById("preview");
+      iframe.srcdoc = html;
+    }
+
+    window.onload = renderTemplate;
+  </script>
+
+</body>
+</html>
